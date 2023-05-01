@@ -28,39 +28,58 @@ const crearNuevaLinea =(nombre, email)=>{
 // Constante que permite recorrer todos los elementos del DOM y encontrar el media = data-table
 const table = document.querySelector("[data-table]")
 
+
 console.log("CLIENT - SERVICE");
-// Constante que establece una peticion XML HTTP
-const http = new XMLHttpRequest();
 
-// Se llama al metodo GET de XMLHttpRequest y a su vez, la url del servidor montado localmente con JSON-SERVER
-http.open("GET","http://localhost:3000/perfil");
-// Instruccion que se encarga de enviar la Anterior Peticion
-http.send();
+// Funcion que permite ejecutar promesas que a su vez, ejecutaran peticiones al servidor
+const listaClientes = () => {
+    const promise = new Promise((resolve,reject) =>{
 
-// Instruccion que indica que en cuanto se cargue la peticion XMLHttpRequest, realice una funcion
-http.onload = ()=>{
 
-    // Constante que almacena la respuesta proveniente del servidor en formato TEXTO y lo transforma a elemento JSON
-    const data = JSON.parse(http.response);
+        // Constante que establece una peticion XML HTTP
+        const http = new XMLHttpRequest();
 
+        // Se llama al metodo GET de XMLHttpRequest y a su vez, la url del servidor montado localmente con JSON-SERVER
+        http.open("GET","http://localhost:3000/perfil");
+        // Instruccion que se encarga de enviar la Anterior Peticion
+        http.send();
+
+        // Instruccion que indica que en cuanto se cargue la peticion XMLHttpRequest, realice una funcion
+        http.onload = ()=>{
+
+            // Constante que almacena la respuesta proveniente del servidor en formato TEXTO y lo transforma a elemento JSON
+            const response = JSON.parse(http.response);
+
+            // Condicional que identifica si el estado de la peticion HTTP es mayor a 400 (Codigos de error), ejecute la funcion reject de la promise
+            if(http.status >=400){
+                reject(response);
+            }else{
+                resolve(response);
+            }
+
+
+        };
+    })
+    return promise;
+}
+
+// Llamado a las condiciones a partir del http.status. En caso de que la peticion sea correcta, se desplegara la informacion contenida en el THEN, de lo contrario, sera en CATH
+listaClientes().then((data)=>{
     // Ciclo que permite recorrer el Array data, el cual tiene la informacion de la base de datos montada en el servidor JSON
     data.forEach(perfil => {
 
-        // Constante que permite llamar la funcion crearNuevaLinea la cual a su vez permite crear los elementos HTML con la informacion obtenida de la
-        // base de datos JSON
+        // Constante que permite llamar la funcion crearNuevaLinea la cual a su vez permite crear los elementos HTML con la informacion obtenida de la base de datos JSON
         const nuevaLinea = crearNuevaLinea(perfil.nombre, perfil.email);
 
         // El metodo appendChild permtie crear un nuevo elemento debajo del Padre. Es decir, la constnate nuevaLinea retorna el elemento TR con la
         // informacion HTML y los parametros establecidos. y posteriormente, el metodo appendChild imprime esta informacion luego del elemento padre
         table.appendChild(nuevaLinea);
     });
-    console.log(data);
-    // Crear una nueva peticion luego de que se haya cargador la primera. ESTRUCTURA ANIDADA
-    const http2 = new XMLHttpRequest();
-    http2.open("GET","http://localhost:3000/perfil/hoy");
-    http2.send();
-    http2.onload = ()=>{
-        const data = JSON.parse(http2.response);
-    }
+}).catch((error)=>{
+    alert("Error en la carga de los datos");
+})
 
-}
+
+
+
+
