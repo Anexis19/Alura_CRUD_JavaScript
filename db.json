@@ -9,6 +9,16 @@
       "nombre": "Gabriel Rios",
       "email": "gabirios@alura.com",
       "id": 2
+    },
+    {
+      "nombre": "Juliana Rodriguez",
+      "email": "juliro@alura.com",
+      "id": "e99381c3-c8b8-416b-868c-0d8aa391de70"
+    },
+    {
+      "nombre": "Ramiro Muñoz",
+      "email": "ramuñoz@alura.com",
+      "id": "14f19421-bc53-45b0-9f80-c0d071b5533f"
     }
   ]
 }
