@@ -9,7 +9,6 @@ const obtenerInformacion = () =>{
     const id = url.searchParams.get("id");
     console.log(id);
 
-
     if(id==null){
         // Redireccion a una pagina definida en caso de que la URL al momento de editar el usuario, no exista en el servidor
         window.location.href="/screens/error.html";
