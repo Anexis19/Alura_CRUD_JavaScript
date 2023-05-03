@@ -1,5 +1,8 @@
 import { clientServices } from "../service/client-service.js";
 
+// Seleccion del elemento que contiene la informacion del formulario
+const formulario = document.querySelector("[data-form]");
+
 
 
 const obtenerInformacion = () =>{
@@ -9,8 +12,8 @@ const obtenerInformacion = () =>{
     const id = url.searchParams.get("id");
     console.log(id);
 
+    // Redireccion a una pagina definida en caso de que la URL al momento de editar el usuario, no exista en el servidor
     if(id==null){
-        // Redireccion a una pagina definida en caso de que la URL al momento de editar el usuario, no exista en el servidor
         window.location.href="/screens/error.html";
     }
 
@@ -26,6 +29,22 @@ const obtenerInformacion = () =>{
         email.value = perfil.email;
     });
 }
-
-
 obtenerInformacion();
+
+formulario.addEventListener("submit",(evento)=>{
+    // Instruccion que permite obtener informacion de la URL
+    const url = new URL(window.location);
+    // Obtencion de un dato en especifico de la URL
+    const id = url.searchParams.get("id");
+    // Evitar que el formulario trate de hacer la peticion
+    evento.preventDefault();
+    // Obtencion de la informacion del usuario. Se almacena el elemento HTML en si mismo
+    const nombre = document.querySelector("[data-nombre]").value;
+    const email = document.querySelector("[data-email]").value;
+
+    console.log(nombre," - ",email);
+
+    clientServices.actualizarCliente(nombre,email,id).then(()=>{
+        window.location.href="/screens/edicion_concluida.html";
+    })
+})

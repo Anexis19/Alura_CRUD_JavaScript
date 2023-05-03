@@ -34,11 +34,20 @@ const eliminarCliente=(id)=>{
 
     })
 }
-// FUNCION QUE PERMITE EDITAR LA INFORMACION DEL CLIENTE MEDIANTE EL ID
+// FUNCION QUE PERMITE OBETENER LA INFORMACION DEL CLIENTE MEDIANTE EL ID
 const detalleCliente = (id) =>{
     return fetch(`http://localhost:3000/perfil/${id}`).then((respuesta) =>respuesta.json())
 }
-
+// FUNCION QUE PERMITE ACTUALIZAR LA INFORMACION DEL CLIENTE MEDIANTE EL ID
+const actualizarCliente = (nombre,email,id) =>{
+    return fetch(`http://localhost:3000/perfil/${id}`,{
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body:JSON.stringify({nombre,email})
+    }).then((respuesta)=>respuesta).catch((error)=>console.log("Error en la actualizacion del usuario"));
+}
 
 // Exportar constante listaCliente la cual se almacena en un objeto clientServices
 export const clientServices ={
@@ -47,4 +56,5 @@ export const clientServices ={
     crearCliente,
     eliminarCliente,
     detalleCliente,
+    actualizarCliente,
 };
