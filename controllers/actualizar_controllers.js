@@ -4,8 +4,8 @@ import { clientServices } from "../service/client-service.js";
 const formulario = document.querySelector("[data-form]");
 
 
-
-const obtenerInformacion = () =>{
+// Definicion de funcion asyncrona
+const obtenerInformacion = async() =>{
     // Instruccion que permite obtener informacion de la URL
     const url = new URL(window.location);
     // Obtencion de un dato en especifico de la URL
@@ -17,18 +17,36 @@ const obtenerInformacion = () =>{
         window.location.href="/screens/error.html";
     }
 
+
     // Obtencion de la informacion del usuario. Se almacena el elemento HTML en si mismo
     const nombre = document.querySelector("[data-nombre]");
     const email = document.querySelector("[data-email]");
     console.log(nombre, ' - ', email);
 
-    // Llamado a la funcion creada en client_services y se pasa la id sobre la cual se va a obtener la informacion mediante una Promise
-    clientServices.detalleCliente(id).then((perfil) => {
-        // Obtencion del valor del campo HTML y se almacena en el perfil
-        nombre.value = perfil.nombre;
-        email.value = perfil.email;
-    });
-}
+    // Funcion Try Catch que solo funciona dentro de un FUNCION ANONIMA
+    try {
+        // Llamado asincrono a la funcion creada en client_services y se pasa la id sobre la cual se va a obtener la informacion mediante una Promise
+        const perfil = await clientServices.detalleCliente(id)
+
+        // Control de errores en el caso de que el perfil (nombre e email) sea invalido
+        if(perfil.nombre && perfil.email){
+            // Obtencion del valor del campo HTML y se almacena en el perfil mediante la funcion asincrona
+            nombre.value = perfil.nombre;
+            email.value = perfil.email;
+        }else{
+            throw new Error();
+
+        }
+
+
+
+    } catch (error) {
+        // console.log("Catch Error - ", error)
+        alert("Se produjo un error en la carga de los datos");
+        window.location.href = "/screens/error.html";
+    }
+
+};
 obtenerInformacion();
 
 formulario.addEventListener("submit",(evento)=>{
