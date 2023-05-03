@@ -34,11 +34,17 @@ const eliminarCliente=(id)=>{
 
     })
 }
+// FUNCION QUE PERMITE EDITAR LA INFORMACION DEL CLIENTE MEDIANTE EL ID
+const detalleCliente = (id) =>{
+    return fetch(`http://localhost:3000/perfil/${id}`).then((respuesta) =>respuesta.json())
+}
 
 
 // Exportar constante listaCliente la cual se almacena en un objeto clientServices
 export const clientServices ={
+
     listaClientes,
     crearCliente,
     eliminarCliente,
+    detalleCliente,
 };

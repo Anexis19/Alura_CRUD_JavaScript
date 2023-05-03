@@ -8,6 +8,8 @@ const crearNuevaLinea =(nombre, email,id)=>{
     const linea = document.createElement("tr");
 
     // Ingreso de informacion de los parametros a el contenido
+
+    // Paso de id mediante URL para editar la informacion del cliente
     const contenido =
     `<tr>
         <td class="td" data-td>${nombre}</td>
@@ -15,7 +17,7 @@ const crearNuevaLinea =(nombre, email,id)=>{
         <td>
         <ul class="table__button-control">
             <li>
-                <a href="../screens/editar_cliente.html" class="simple-button simple-button--edit">Editar</a>
+                <a href="../screens/editar_cliente.html?id=${id}" class="simple-button simple-button--edit">Editar</a>
             </li>
             <li>
                 <button class="simple-button simple-button--delete" type="button" id="${id}"> Eliminar </button>
